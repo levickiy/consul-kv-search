@@ -2,6 +2,7 @@ package org.example.db;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,11 @@ public class SearchHistoryDaoTest {
 
     SearchHistoryDao dao = new SearchHistoryDao();
     private static final String DB_FILE = "history.sqlite";
+
+    @BeforeAll
+    static void loadDriver() throws Exception {
+        Class.forName("org.sqlite.JDBC");
+    }
 
     @BeforeEach
     void resetDb() {
