@@ -41,6 +41,7 @@ public class SearchController {
                 ? List.of() : indexer.search(q);
         return search.data("results", results)
                 .data("history", history.findAll())
+                .data("q", q)
                 .data("consulBaseUrl", consulBaseUrl)
                 .render();
     }

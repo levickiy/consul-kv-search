@@ -1,36 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Consul KV Search</title>
-    <link rel="stylesheet" href="/search.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<h1>Consul KV Search</h1>
-<form action="/search" method="get">
-    <input type="text" name="q" placeholder="Enter search" value="{q ?: ''}" />
-    <button type="submit">Search</button>
-    <button type="button" onclick="location.href='/reindex'">Refresh Index</button>
-</form>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Consul KV Search</h2>
+                    <form method="get" action="/search" class="input-group mb-3">
+                        <input type="text" class="form-control" name="q" value="{q}" placeholder="Search for a key..." autofocus>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                    <div>
+                        <a href="/reindex" class="btn btn-outline-secondary btn-sm">Reindex</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-{#if results.size() > 0}
-<h2>Results</h2>
-<ul>
-    {#each results}
-    <li>
-        <b>
-            <a href="{consulBaseUrl}{it.key}/edit" target="_blank">{it.key}</a>
-        </b>: {it.value}
-    </li>
-    {/each}
-</ul>
-{/if}
+    {#if results && results.size > 0}
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Results</h5>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                            <th>Link</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {#for result in results}
+                        <tr>
+                            <td>{result.key}</td>
+                            <td>{result.value}</td>
+                            <td>
+                                <a href="{consulBaseUrl}{result.key}" target="_blank" class="btn btn-sm btn-link">View in Consul</a>
+                            </td>
+                        </tr>
+                        {/for}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/if}
 
-<h2>History</h2>
-<ul>
-    {#each history}
-    <li>{it}</li>
-    {/each}
-</ul>
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Search History</h5>
+                    <ul class="list-group">
+                        {#for h in history}
+                        <li class="list-group-item">{h}</li>
+                        {/for}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
