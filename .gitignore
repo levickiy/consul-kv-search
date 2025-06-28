@@ -2,3 +2,5 @@
 .idea/
 history.sqlite
 target/
+.mvn/wrapper/maven-wrapper.jar
+
