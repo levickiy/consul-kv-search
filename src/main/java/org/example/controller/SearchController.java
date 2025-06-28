@@ -35,10 +35,14 @@ public class SearchController {
     @Path("/search")
     @Produces(MediaType.TEXT_HTML)
     public String uiSearch(@QueryParam("q") String q) {
+        String consulBaseUrl = indexer.getBaseUrl(); // Implement this in your client
+
         List<KvMatch> results = (q == null || q.isEmpty())
                 ? List.of() : indexer.search(q);
         return search.data("results", results)
-                .data("history", history.findAll()).render();
+                .data("history", history.findAll())
+                .data("consulBaseUrl", consulBaseUrl)
+                .render();
     }
 
     @GET

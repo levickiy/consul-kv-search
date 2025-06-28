@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head><meta charset="UTF-8"><title>Consul KV Search</title></head>
+<head>
+    <meta charset="UTF-8">
+    <title>Consul KV Search</title>
+    <link rel="stylesheet" href="/search.css">
+</head>
 <body>
-  <h1>Consul KV Search</h1>
-  <form action="/search" method="get">
-    <input type="text" name="q" placeholder="Enter search" />
+<h1>Consul KV Search</h1>
+<form action="/search" method="get">
+    <input type="text" name="q" placeholder="Enter search" value="{q ?: ''}" />
     <button type="submit">Search</button>
     <button type="button" onclick="location.href='/reindex'">Refresh Index</button>
-  </form>
+</form>
 
-  {#if results.size() > 0}
-    <h2>Results</h2>
-    <ul>
-      {#each results}
-        <li><b>{it.key}</b>: {it.value}</li>
-      {/each}
-    </ul>
-  {/if}
-
-  <h2>History</h2>
-  <ul>
-    {#each history}
-      <li>{it}</li>
+{#if results.size() > 0}
+<h2>Results</h2>
+<ul>
+    {#each results}
+    <li>
+        <b>
+            <a href="{consulBaseUrl}{it.key}/edit" target="_blank">{it.key}</a>
+        </b>: {it.value}
+    </li>
     {/each}
-  </ul>
+</ul>
+{/if}
+
+<h2>History</h2>
+<ul>
+    {#each history}
+    <li>{it}</li>
+    {/each}
+</ul>
 </body>
 </html>

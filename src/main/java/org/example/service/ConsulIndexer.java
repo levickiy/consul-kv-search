@@ -33,7 +33,9 @@ public class ConsulIndexer {
         historyDao.insert(q);
         return engine.search(q);
     }
-
+    public String getBaseUrl() {
+        return client.getBaseUrl();
+    }
     public String health() {
         reindex(); // перевіряємо, чи індексатор працює
         return "OK";
