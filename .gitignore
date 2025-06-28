@@ -1,6 +1,6 @@
-.mvn/wrapper/maven-wrapper.jar
-# IDE
 *.iml
 .idea/
-# Build
-/target/
+history.sqlite
+target/
+.mvn/wrapper/maven-wrapper.jar
+
