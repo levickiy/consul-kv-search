@@ -36,6 +36,13 @@ public class FuzzySearchEngineTest {
     }
 
     @Test
+    void testCaseInsensitiveMatch() {
+        List<KvMatch> results = engine.search("ApPlE");
+        assertFalse(results.isEmpty(), "Search should be case-insensitive");
+        assertEquals("apple", results.get(0).getKey());
+    }
+
+    @Test
     void testNoMatch() {
         List<KvMatch> results = engine.search("zzz");
         assertTrue(results.isEmpty());
