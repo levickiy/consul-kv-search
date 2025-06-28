@@ -6,11 +6,15 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
 import org.example.db.SearchHistoryDao;
 import org.example.model.KvMatch;
 import org.example.service.ConsulIndexer;
 
+import java.net.URI;
 import java.util.List;
 
 @Path("/")
@@ -48,11 +52,17 @@ public class SearchController {
 
     @GET
     @Path("reindex")
-    public String reindex() {
+    public Response reindex() {
         indexer.reindex();
-        return uiSearch("");
+        return Response.seeOther(URI.create("/search")).build();
     }
 
+    @GET
+    @Path("/search/clean")
+    public Response cleanSearchHistory() {
+        history.deleteAll();
+        return Response.seeOther(URI.create("/search")).build();
+    }
     @GET
     @Path("health")
     public String health() {

@@ -9,9 +9,13 @@ import jakarta.inject.Inject;
 import org.example.client.ConsulClient;
 import org.example.model.KvEntry;
 import org.example.service.ConsulIndexer;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
@@ -22,6 +26,9 @@ public class SearchEndpointTest {
 
     @Inject
     ConsulIndexer indexer;
+
+    @Inject
+    org.example.db.SearchHistoryDao searchHistoryDao;
 
     @BeforeEach
     void setup() {
@@ -66,5 +73,26 @@ public class SearchEndpointTest {
                 .then()
                 .statusCode(200)
                 .body("[0].key", equalTo("foo"));
+    }
+
+    @Test
+    void testSearchCleanEndpoint() {
+        // Add entries to history
+        searchHistoryDao.insert("foo");
+        searchHistoryDao.insert("bar");
+
+        // Ensure history is not empty
+        assertFalse(searchHistoryDao.findAll().isEmpty());
+
+        // Call /search/clean and expect redirect
+        given()
+                .redirects().follow(false)
+                .when().get("/search/clean")
+                .then()
+                .statusCode(303)
+                .header("Location", Matchers.endsWith("/search"));
+
+        // Ensure history is empty after cleaning
+        assertTrue(searchHistoryDao.findAll().isEmpty());
     }
 }

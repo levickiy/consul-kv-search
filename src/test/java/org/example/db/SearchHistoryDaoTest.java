@@ -39,4 +39,15 @@ public class SearchHistoryDaoTest {
         assertTrue(all.contains("first"));
         assertTrue(all.contains("second"));
     }
+
+    @Test
+    void testDeleteAll() {
+        dao.insert("first");
+        dao.insert("second");
+        assertFalse(dao.findAll().isEmpty());
+
+        dao.deleteAll();
+        List<String> all = dao.findAll();
+        assertTrue(all.isEmpty(), "History should be empty after deleteAll()");
+    }
 }

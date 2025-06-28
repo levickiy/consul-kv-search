@@ -45,4 +45,13 @@ public class SearchHistoryDao {
         }
         return res;
     }
+
+    public void deleteAll() {
+        try (Connection c = DriverManager.getConnection(URL);
+             Statement s = c.createStatement()) {
+            s.executeUpdate("DELETE FROM search_entry");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

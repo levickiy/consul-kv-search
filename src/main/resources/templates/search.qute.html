@@ -46,13 +46,21 @@
                             <td>{result.key}</td>
                             <td>{result.value}</td>
                             <td>
-                                <a href="{consulBaseUrl}{result.key}" target="_blank" class="btn btn-sm btn-link">View in Consul</a>
+                                <a href="{consulBaseUrl}{result.key}/edit" target="_blank" class="btn btn-sm btn-link">View in Consul</a>
                             </td>
                         </tr>
                         {/for}
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    {#else}
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="alert alert-warning text-center" role="alert">
+                No results found for your search term.
             </div>
         </div>
     </div>
@@ -63,9 +71,24 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Search History</h5>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Search History</h5>
+                            <a href="/search/clean" class="btn btn-sm btn-danger">Clean</a>
+                        </div>
+                        <ul class="list-group mt-2">
+                            {#for h in history}
+                            <li class="list-group-item">
+                                <a href="/search?q={h}" class="text-decoration-none">{h}</a>
+                            </li>
+                            {/for}
+                        </ul>
+                    </div>
                     <ul class="list-group">
                         {#for h in history}
-                        <li class="list-group-item">{h}</li>
+                        <li class="list-group-item">
+                            <a href="/search?q={h}" class="text-decoration-none">{h}</a>
+                        </li>
                         {/for}
                     </ul>
                 </div>
