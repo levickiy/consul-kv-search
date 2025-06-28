@@ -23,6 +23,7 @@ public class SearchController {
     @Inject
     SearchHistoryDao history;
 
+    @GET
     @Path("/api/search")
     @Produces(MediaType.APPLICATION_JSON)
     public TemplateInstance search(@QueryParam("q") String q) {
@@ -32,6 +33,7 @@ public class SearchController {
                 .data("history", history.findAll());
     }
 
+    @GET
     @Path("/search")
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance uiSearch(@QueryParam("q") String q) {
