@@ -1,7 +1,6 @@
 package org.example.controller;
 
 import io.quarkus.qute.Template;
-import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -35,16 +34,16 @@ public class SearchController {
     @GET
     @Path("/search")
     @Produces(MediaType.TEXT_HTML)
-    public TemplateInstance uiSearch(@QueryParam("q") String q) {
+    public String uiSearch(@QueryParam("q") String q) {
         List<KvMatch> results = (q == null || q.isEmpty())
                 ? List.of() : indexer.search(q);
         return search.data("results", results)
-                .data("history", history.findAll());
+                .data("history", history.findAll()).render();
     }
 
     @GET
     @Path("reindex")
-    public TemplateInstance reindex() {
+    public String reindex() {
         indexer.reindex();
         return uiSearch("");
     }
