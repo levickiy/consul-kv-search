@@ -26,11 +26,10 @@ public class SearchController {
     @GET
     @Path("/api/search")
     @Produces(MediaType.APPLICATION_JSON)
-    public TemplateInstance search(@QueryParam("q") String q) {
-        List<KvMatch> results = (q == null || q.isEmpty())
-                ? List.of() : indexer.search(q);
-        return search.data("results", results)
-                .data("history", history.findAll());
+    public List<KvMatch> search(@QueryParam("q") String q) {
+        return (q == null || q.isEmpty())
+                ? List.of()
+                : indexer.search(q);
     }
 
     @GET
@@ -47,7 +46,7 @@ public class SearchController {
     @Path("reindex")
     public TemplateInstance reindex() {
         indexer.reindex();
-        return search("");
+        return uiSearch("");
     }
 
     @GET

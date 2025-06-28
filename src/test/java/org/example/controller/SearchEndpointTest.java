@@ -4,10 +4,33 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.InjectMock;
+import jakarta.inject.Inject;
+import org.example.client.ConsulClient;
+import org.example.model.KvEntry;
+import org.example.service.ConsulIndexer;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.List;
+import static org.mockito.Mockito.*;
 
 @QuarkusTest
 public class SearchEndpointTest {
+
+    @InjectMock
+    ConsulClient consulClient;
+
+    @Inject
+    ConsulIndexer indexer;
+
+    @BeforeEach
+    void setup() {
+        when(consulClient.fetchAll()).thenReturn(List.of(new KvEntry() {
+            @Override public String getKey() { return "foo"; }
+            @Override public String getValue() { return "bar"; }
+        }));
+        indexer.reindex();
+    }
 
     @Test
     void testHealthEndpoint() {
@@ -33,5 +56,15 @@ public class SearchEndpointTest {
                 .when().get("/reindex")
                 .then()
                 .statusCode(anyOf(is(200), is(302)));
+    }
+
+    @Test
+    void testApiSearchReturnsJson() {
+        given()
+                .queryParam("q", "foo")
+                .when().get("/api/search")
+                .then()
+                .statusCode(200)
+                .body("[0].key", equalTo("foo"));
     }
 }
