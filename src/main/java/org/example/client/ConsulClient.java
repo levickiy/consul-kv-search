@@ -31,7 +31,8 @@ public class ConsulClient {
             HttpURLConnection conn = (HttpURLConnection)new URL(endpoint).openConnection();
             conn.setRequestMethod("GET");
             try (InputStream in = conn.getInputStream()) {
-                List<KvEntry> entries = mapper.readValue(in, new TypeReference<List<KvEntry>>() {});
+                List<KvEntry> entries = mapper.readValue(in, new TypeReference<>() {
+                });
                 LOG.infof("Fetched %d entries from Consul", entries.size());
                 return entries;
             }

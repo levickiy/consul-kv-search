@@ -76,13 +76,6 @@
                             <h5 class="card-title mb-0">Search History</h5>
                             <a href="/search/clean" class="btn btn-sm btn-danger">Clean</a>
                         </div>
-                        <ul class="list-group mt-2">
-                            {#for h in history}
-                            <li class="list-group-item">
-                                <a href="/search?q={h}" class="text-decoration-none">{h}</a>
-                            </li>
-                            {/for}
-                        </ul>
                     </div>
                     <ul class="list-group">
                         {#for h in history}

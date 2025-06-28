@@ -90,7 +90,7 @@ public class SearchEndpointTest {
                 .when().get("/search/clean")
                 .then()
                 .statusCode(303)
-                .header("Location", Matchers.endsWith("/search"));
+                .header("Location", Matchers.containsString("/search?msg=History%20cleaned"));
 
         // Ensure history is empty after cleaning
         assertTrue(searchHistoryDao.findAll().isEmpty());
