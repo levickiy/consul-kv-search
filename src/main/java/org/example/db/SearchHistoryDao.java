@@ -16,6 +16,7 @@ public class SearchHistoryDao {
             // Створюємо таблицю, якщо її ще немає
             ddl.executeUpdate(
                     "CREATE TABLE IF NOT EXISTS search_entry (" +
+                            "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
                             "  query TEXT NOT NULL" +
                             ")"
             );

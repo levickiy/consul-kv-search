@@ -6,6 +6,7 @@ import org.example.model.KvEntry;
 import org.example.model.KvMatch;
 
 import java.util.*;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -22,13 +23,14 @@ public class FuzzySearchEngine {
     }
 
     public List<KvMatch> search(String query) {
-        String q = query.toLowerCase();
+        String q = query.toLowerCase(Locale.ROOT);
         return kv.entrySet().stream()
-            .filter(e -> jw.similarity(q, e.getKey().toLowerCase()) > 0.7
-                      || jw.similarity(q, e.getValue().toLowerCase()) > 0.7)
+            .filter(e -> jw.similarity(q, e.getKey().toLowerCase(Locale.ROOT)) > 0.7
+                      || jw.similarity(q, e.getValue().toLowerCase(Locale.ROOT)) > 0.7)
             .map(e -> new AbstractMap.SimpleEntry<>(e,
-                Math.max(jw.similarity(q, e.getKey().toLowerCase()),
-                         jw.similarity(q, e.getValue().toLowerCase()))))
+                Math.max(jw.similarity(q, e.getKey().toLowerCase(Locale.ROOT)),
+                         jw.similarity(q, e.getValue().toLowerCase(Locale.ROOT))))
+            )
             .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
             .map(es -> new KvMatch(es.getKey().getKey(), es.getKey().getValue()))
             .collect(Collectors.toList());
