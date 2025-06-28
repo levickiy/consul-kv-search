@@ -1,5 +1,6 @@
 # Consul KV Search
 
+
 This project is a small [Quarkus](https://quarkus.io/) application that indexes key/value entries from a Consul server and exposes a simple fuzzy search interface. Search queries are stored in an embedded SQLite database so that recent history can be displayed in the UI.
 
 ## Building and running
