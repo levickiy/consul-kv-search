@@ -5,16 +5,17 @@ This project is a small [Quarkus](https://quarkus.io/) application that indexes 
 
 ## Building and running
 
-The project uses Maven. To run the unit tests execute:
+The project uses Maven. A Maven wrapper script (`mvnw`) is included so you don't
+need a local Maven installation. To run the unit tests execute:
 
 ```bash
-mvn test
+./mvnw test
 ```
 
 During development you can start Quarkus in dev mode which automatically reloads changes:
 
 ```bash
-mvn quarkus:dev
+./mvnw quarkus:dev
 ```
 
 The application starts on port `8080`. Visiting `/search` provides a basic HTML search page. The `/api/search` endpoint returns JSON results.
